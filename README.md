@@ -116,18 +116,6 @@ powershell -ExecutionPolicy Bypass -File sogou-debloat.ps1 -DryRun -All
 powershell -ExecutionPolicy Bypass -File sogou-debloat.ps1 -Restore
 ```
 
-### 关于「换台机器双击就一闪而过」
-
-旧版脚本有三个叠加问题：
-
-1. **全文没有任何暂停**，脚本一结束控制台就关闭，任何输出都来不及看；
-2. **非管理员时直接 `exit`**，而双击和右键「使用 PowerShell 运行」都不会提权，
-   UAC 根本不会弹，所以打印一行警告就退出；
-3. **执行策略**：新机器默认 `Restricted`，双击时无法附加 `-ExecutionPolicy Bypass`，
-   报 SecurityError 后立即退出；从压缩包解出或网络传来的 `.ps1` 还会带"网络来源"标记，
-   `RemoteSigned` 策略下同样被拒。
-
-现已全部修复：
 
 - 非管理员时**自动弹 UAC 提权重启**，并原样带上原有参数
 - **每个退出路径都会暂停**等待回车：正常结束、取消、找不到安装目录、提权失败
